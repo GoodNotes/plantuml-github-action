@@ -1,13 +1,13 @@
-FROM ubuntu:xenial
-# Current plantUML version at time of switch: PlantUML Version 1.2020.02
-# Note: GitHub Actions must be run by the default Docker user (root). Ensure your Dockerfile does not set the USER instruction, otherwise you will not be able to access GITHUB_WORKSPACE.
 
-# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
-RUN mkdir -p /usr/share/man/man1
+FROM openjdk:16-alpine
 
-RUN apt-get -qy update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install plantuml=1.2022.6 graphviz git fonts-ipafont fonts-ipaexfont && \
-    rm -rf /var/lib/apt/lists/*
+ARG PLANTUML_VERSION
+
+ENV LANG en_US.UTF-8
+RUN apk add --no-cache graphviz ttf-droid ttf-droid-nonlatin curl \
+    && mkdir /app \
+    && curl -L https://github.com/plantuml/plantuml/releases/download/v1.2022.6/plantuml-1.2022.6.jar -o /app/plantuml.jar \
+    && apk del curl
 
 COPY entrypoint.sh /entrypoint.sh
 
