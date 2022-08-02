@@ -10,7 +10,7 @@ inputs:
 
 runs:
     using: 'docker'
-    image: 'docker://cloudbees/plantuml-github-action'
+    image: 'Dockerfile'
     args:
       - ${{ inputs.args }}
 
